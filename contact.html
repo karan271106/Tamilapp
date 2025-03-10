@@ -1,0 +1,204 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Contact Us - Tamil Language and Culture Educational Games
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glow-button {
+            background: linear-gradient(45deg, #ff6ec4, #7873f5);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 10px rgba(255, 110, 196, 0.5), 0 0 20px rgba(120, 115, 245, 0.5);
+            transition: transform 0.2s;
+        }
+        .glow-button:hover {
+            transform: scale(1.05);
+        }
+  </style>
+ </head>
+ <body class="font-roboto bg-gray-900 text-white">
+  <header class="fixed top-0 left-0 w-full p-4 glassmorphism z-10">
+   <div class="container mx-auto flex justify-between items-center">
+    <h1 class="text-2xl font-bold">
+     Tamil Games
+    </h1>
+    <nav>
+     <ul class="flex space-x-4">
+      <li>
+       <a class="hover:underline" href="index.html">
+        Home
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="games.html">
+        Games
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="about.html">
+        About
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="contact.html">
+        Contact
+       </a>
+      </li>
+     </ul>
+    </nav>
+   </div>
+  </header>
+  <main class="container mx-auto p-4 pt-20">
+   <section class="text-center my-8">
+    <h2 class="text-3xl font-bold mb-4">
+     Contact Us
+    </h2>
+    <p class="text-lg">
+     We'd love to hear from you! Whether you have a question about our games, feedback, or just want to say hello, feel free to reach out.
+    </p>
+   </section>
+   <section class="bg-gray-800 p-8 rounded-lg shadow-md">
+    <form action="#" method="POST">
+     <div class="mb-4">
+      <label class="block text-lg font-bold mb-2" for="name">
+       Name
+      </label>
+      <input class="w-full p-2 rounded-lg bg-gray-700 text-white" id="name" name="name" required="" type="text"/>
+     </div>
+     <div class="mb-4">
+      <label class="block text-lg font-bold mb-2" for="email">
+       Email
+      </label>
+      <input class="w-full p-2 rounded-lg bg-gray-700 text-white" id="email" name="email" required="" type="email"/>
+     </div>
+     <div class="mb-4">
+      <label class="block text-lg font-bold mb-2" for="message">
+       Message
+      </label>
+      <textarea class="w-full p-2 rounded-lg bg-gray-700 text-white" id="message" name="message" required="" rows="5">
+      </textarea>
+     </div>
+     <button class="glow-button mt-4" type="submit">
+      <i class="fas fa-paper-plane">
+      </i>
+      Send Message
+     </button>
+    </form>
+   </section>
+  </main>
+  <footer class="bg-gray-800 text-white p-4 mt-8">
+   <div class="container mx-auto text-center">
+    <p>
+     © 2025 Tamil Games. All rights reserved.
+    </p>
+    <div class="flex justify-center space-x-4 mt-2">
+     <a class="hover:underline" href="#">
+      <i class="fab fa-facebook-f">
+      </i>
+     </a>
+     <a class="hover:underline" href="#">
+      <i class="fab fa-twitter">
+      </i>
+     </a>
+     <a class="hover:underline" href="#">
+      <i class="fab fa-instagram">
+      </i>
+     </a>
+     <a class="hover:underline" href="#">
+      <i class="fab fa-linkedin-in">
+      </i>
+     </a>
+    </div>
+   </div>
+  </footer>
+  <script>
+   document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("form");
+        const nameInput = document.getElementById("name");
+        const emailInput = document.getElementById("email");
+        const messageInput = document.getElementById("message");
+        const submitButton = document.querySelector("button[type='submit']");
+        
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            clearErrorMessages();
+            if (validateForm()) {
+                displaySuccessMessage();
+            }
+        });
+
+        function validateForm() {
+            let isValid = true;
+
+            if (nameInput.value.trim() === "") {
+                showError(nameInput, "Name is required.");
+                isValid = false;
+            }
+
+            if (emailInput.value.trim() === "") {
+                showError(emailInput, "Email is required.");
+                isValid = false;
+            } else if (!isValidEmail(emailInput.value.trim())) {
+                showError(emailInput, "Please enter a valid email.");
+                isValid = false;
+            }
+
+            if (messageInput.value.trim() === "") {
+                showError(messageInput, "Message cannot be empty.");
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function showError(inputElement, message) {
+            const errorSpan = document.createElement("span");
+            errorSpan.classList.add("text-red-500", "text-sm", "mt-1");
+            errorSpan.textContent = message;
+            inputElement.classList.add("border-red-500");
+            inputElement.parentElement.appendChild(errorSpan);
+        }
+
+        function clearErrorMessages() {
+            const errorMessages = document.querySelectorAll(".text-red-500");
+            errorMessages.forEach((errorMessage) => {
+                errorMessage.remove();
+            });
+            
+            nameInput.classList.remove("border-red-500");
+            emailInput.classList.remove("border-red-500");
+            messageInput.classList.remove("border-red-500");
+        }
+
+        function isValidEmail(email) {
+            const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return regex.test(email);
+        }
+
+        function displaySuccessMessage() {
+            submitButton.textContent = "Sending...";
+            submitButton.disabled = true;
+
+            setTimeout(function() {
+                form.reset();
+                submitButton.textContent = "Send Message";
+                submitButton.disabled = false;
+                alert("Thank you for contacting us! Your message has been sent.");
+            }, 2000);
+        }
+    });
+  </script>
+ </body>
+</html>

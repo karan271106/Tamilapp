@@ -1,0 +1,204 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamil Proverbs and Sayings Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <style>
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glow-button {
+            background: linear-gradient(45deg, #ff6ec4, #7873f5);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 10px rgba(255, 110, 196, 0.5), 0 0 20px rgba(120, 115, 245, 0.5);
+            transition: transform 0.2s;
+        }
+        .glow-button:hover {
+            transform: scale(1.05);
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="font-roboto bg-gray-900 text-white flex justify-center items-center h-screen">
+    <div class="game-container bg-white text-gray-900 rounded-lg p-8 shadow-lg w-80 text-center">
+        <h1 class="text-2xl font-bold mb-4">Tamil Proverbs and Sayings Game</h1>
+
+        <div id="question-container">
+            <p id="question-text" class="text-lg mb-4"></p>
+            <div id="answer-buttons" class="flex flex-col gap-2 mb-4">
+                <button class="answer-btn glow-button" id="answer1"></button>
+                <button class="answer-btn glow-button" id="answer2"></button>
+                <button class="answer-btn glow-button" id="answer3"></button>
+                <button class="answer-btn glow-button" id="answer4"></button>
+            </div>
+            <p id="timer" class="text-red-500 text-lg"></p>
+        </div>
+
+        <div id="result-container" class="hidden">
+            <h2 class="text-xl font-bold mb-4">Your Score: <span id="final-score" class="text-green-500"></span></h2>
+            <button id="restart-btn" class="glow-button">Restart</button>
+        </div>
+        <a href="gamen.html"><button class="glow-button" onclick="endGame()">
+            <i class="fas fa-stop">
+            </i>
+            End Game
+           </button>
+          </a>
+    </div>
+
+    <script>
+        const proverbQuestions = [
+            {
+                question: "What does the Tamil proverb 'ஆப்பிளை சின்னஞ்சிறு செய்தால் உலகம் அறியாது' mean?",
+                options: [
+                    "A person with a lot of pride will eventually be humbled.",
+                    "What is hidden from the world will not be understood.",
+                    "The world can never understand someone who is humble.",
+                    "Small things are often ignored by the world."
+                ],
+                correctAnswer: "What is hidden from the world will not be understood."
+            },
+            {
+                question: "What is the meaning of the Tamil proverb 'காகம் காற்றில் எரிந்தாலும் தன் கருவியோடு'?",
+                options: [
+                    "A person who faces challenges alone should carry his own burden.",
+                    "Even if you fail, your true nature will remain unchanged.",
+                    "A bird that flies in the air will always return to the nest.",
+                    "You should always strive for excellence."
+                ],
+                correctAnswer: "A person who faces challenges alone should carry his own burden."
+            },
+            {
+                question: "Which Tamil proverb means 'Actions speak louder than words'?",
+                options: [
+                    "சொல்லாதது செய்தது பெரிது",
+                    "தீயது வந்து புளிக்கும்",
+                    "காலை கற்றார் மதியிலே விரட்டார்",
+                    "ஆயிரம் சொல் இல்லை, ஒன்றுதான் வழி"
+                ],
+                correctAnswer: "சொல்லாதது செய்தது பெரிது"
+            },
+            {
+                question: "What does the proverb 'ஒரு காட்டின் மயிலும் இரண்டு வாத்துகளுக்கு இடம் இல்லை' mean?",
+                options: [
+                    "There’s always room for growth.",
+                    "Only one person can be in charge.",
+                    "Two people can never share the same responsibility.",
+                    "One man’s loss is another’s gain."
+                ],
+                correctAnswer: "Only one person can be in charge."
+            },
+            {
+                question: "What does 'பேசுவதே பெரிது, செய்பவா' imply?",
+                options: [
+                    "A person’s actions matter more than words.",
+                    "Words can hurt, but actions heal.",
+                    "What you say is always right.",
+                    "The more you speak, the better."
+                ],
+                correctAnswer: "A person’s actions matter more than words."
+            },
+            {
+                question: "What does the Tamil proverb 'கடலுக்கு அருகில் இருந்தால் வெள்ளமும் வரும்' mean?",
+                options: [
+                    "Being close to danger brings consequences.",
+                    "Be careful about what you wish for.",
+                    "If you want success, you need to take risks.",
+                    "Every action has an equal reaction."
+                ],
+                correctAnswer: "Being close to danger brings consequences."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timer;
+        let timeLeft = 10;
+
+        const questionText = document.getElementById("question-text");
+        const answerButtons = document.querySelectorAll(".answer-btn");
+        const timerText = document.getElementById("timer");
+        const resultContainer = document.getElementById("result-container");
+        const finalScoreElement = document.getElementById("final-score");
+        const restartButton = document.getElementById("restart-btn");
+
+        function startTimer() {
+            timer = setInterval(function() {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    timerText.textContent = `Time remaining: ${timeLeft}s`;
+                } else {
+                    clearInterval(timer);
+                    moveToNextQuestion();
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timer);
+        }
+
+        function loadQuestion() {
+            const currentQuestion = proverbQuestions[currentQuestionIndex];
+            questionText.textContent = currentQuestion.question;
+
+            const options = currentQuestion.options;
+            options.forEach((option, index) => {
+                answerButtons[index].textContent = option;
+                answerButtons[index].onclick = () => checkAnswer(option);
+            });
+
+            timeLeft = 10;
+            timerText.textContent = `Time remaining: ${timeLeft}s`;
+            startTimer();
+        }
+
+        function checkAnswer(selectedAnswer) {
+            const correctAnswer = proverbQuestions[currentQuestionIndex].correctAnswer;
+
+            if (selectedAnswer === correctAnswer) {
+                score++;
+            }
+
+            stopTimer();
+            moveToNextQuestion();
+        }
+
+        function moveToNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < proverbQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            resultContainer.classList.remove("hidden");
+            finalScoreElement.textContent = `${score} out of ${proverbQuestions.length}`;
+        }
+
+        function restartGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            resultContainer.classList.add("hidden");
+            loadQuestion();
+        }
+
+        // Start the game
+        loadQuestion();
+
+        // Event listeners
+        restartButton.addEventListener("click", restartGame);
+    </script>
+</body>
+</html>

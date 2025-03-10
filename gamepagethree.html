@@ -1,0 +1,130 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Play Game - Tamil Language and Culture Educational Games
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glow-button {
+            background: linear-gradient(45deg, #ff6ec4, #7873f5);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 10px rgba(255, 110, 196, 0.5), 0 0 20px rgba(120, 115, 245, 0.5);
+            transition: transform 0.2s;
+        }
+        .glow-button:hover {
+            transform: scale(1.05);
+        }
+  </style>
+ </head>
+ <body class="font-roboto bg-gray-900 text-white">
+  <header class="fixed top-0 left-0 w-full p-4 glassmorphism z-10">
+   <div class="container mx-auto flex justify-between items-center">
+    <h1 class="text-2xl font-bold">
+     Tamil Games
+    </h1>
+    <nav>
+     <ul class="flex space-x-4">
+      <li>
+       <a class="hover:underline" href="index.html">
+        Home
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="gamen.html">
+        Games
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="about.html">
+        About
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="contact.html">
+        Contact
+       </a>
+      </li>
+     </ul>
+    </nav>
+   </div>
+  </header>
+  <main class="container mx-auto p-4 pt-20">
+   <section class="text-center my-8">
+    <h2 class="text-3xl font-bold mb-4">
+        Culture Trivia        </h2>
+    <p class="text-lg">
+        
+        Test your knowledge of Tamil culture with this fun trivia game.        </p>
+   </section>
+   <section class="bg-gray-800 p-8 rounded-lg shadow-md">
+    <div class="flex justify-center mb-4">
+     <img alt="Illustration of a Tamil alphabet learning game" class="w-full h-48 object-cover rounded-t-lg" height="200" src="https://storage.googleapis.com/a1aa/image/vRpVGN-w9bzw8PiFd6NqIQr-I-nYJpBLYzFCpYn-qAQ.jpg" width="300"/>
+    </div>
+    <div class="flex justify-center mb-4">
+     <a href="playthree.html">
+        <button class="glow-button" onclick="startGame()">
+      <i class="fas fa-play">
+      </i>
+      Start Game
+     </button>
+     </a>
+    </div>
+    <div id="game-container" class="bg-gray-700 p-4 rounded-lg hidden">
+     <h3 class="text-xl font-bold mb-4">
+      Game Area
+     </h3>
+     <p class="mb-4">
+      This is where the game will be played. Implement your game logic here.
+     </p>
+    </a>
+    </div>
+   </section>
+  </main>
+  <footer class="bg-gray-800 text-white p-4 mt-8">
+   <div class="container mx-auto text-center">
+    <p>
+     © 2025 Tamil Games. All rights reserved.
+    </p>
+    <div class="flex justify-center space-x-4 mt-2">
+     <a class="hover:underline" href="#">
+      <i class="fab fa-facebook-f">
+      </i>
+     </a>
+     <a class="hover:underline" href="#">
+      <i class="fab fa-twitter">
+      </i>
+     </a>
+     <a class="hover:underline" href="#">
+      <i class="fab fa-instagram">
+      </i>
+     </a>
+     <a class="hover:underline" href="#">
+      <i class="fab fa-linkedin-in">
+      </i>
+     </a>
+    </div>
+   </div>
+  </footer>
+  <script>
+   function startGame() {
+            document.getElementById('game-container').classList.remove('hidden');
+        }
+
+        function endGame() {
+            document.getElementById('game-container').classList.add('hidden');
+        }
+  </script>
+ </body>
+</html>

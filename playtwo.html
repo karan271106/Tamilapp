@@ -1,0 +1,238 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamil Vocabulary Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <style>
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glow-button {
+            background: linear-gradient(45deg, #ff6ec4, #7873f5);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 10px rgba(255, 110, 196, 0.5), 0 0 20px rgba(120, 115, 245, 0.5);
+            transition: transform 0.2s;
+        }
+        .glow-button:hover {
+            transform: scale(1.05);
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="font-roboto bg-gray-900 text-white flex justify-center items-center h-screen">
+    <div class="game-container bg-white text-gray-900 rounded-lg p-8 shadow-lg w-80 text-center">
+        <h1 class="text-2xl font-bold mb-4">Tamil Vocabulary Builder</h1>
+        
+        <!-- Flashcard section -->
+        <div id="flashcard-section">
+            <h2 class="text-xl font-bold mb-4">Flashcards</h2>
+            <div class="flashcard text-3xl text-red-500 mb-4">
+                <span id="tamil-word"></span> 
+            </div>
+            <div id="answer-buttons" class="answer-buttons flex flex-col gap-2 mb-4">
+                <button class="answer-btn glow-button" id="answer1"></button>
+                <button class="answer-btn glow-button" id="answer2"></button>
+                <button class="answer-btn glow-button" id="answer3"></button>
+            </div>
+            <button id="next-btn" class="glow-button hidden">Next Word</button>
+        </div>
+        
+        <!-- Word Matching section -->
+        <div id="matching-section" class="hidden">
+            <h2 class="text-xl font-bold mb-4">Match the Tamil Word with its Meaning</h2>
+            <div id="match-area">
+                <div class="match-tamil text-3xl text-red-500 mb-4">
+                    <span id="tamil-word-matching"></span>
+                </div>
+                <div class="match-english flex flex-col gap-2">
+                    <button class="match-btn glow-button" id="match1"></button>
+                    <button class="match-btn glow-button" id="match2"></button>
+                    <button class="match-btn glow-button" id="match3"></button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Word Quiz section -->
+        <div id="quiz-section" class="hidden">
+            <h2 class="text-xl font-bold mb-4">Vocabulary Quiz</h2>
+            <p id="quiz-question" class="mb-4"></p>
+            <button class="quiz-option glow-button mb-2" id="quiz-answer1"></button>
+            <button class="quiz-option glow-button mb-2" id="quiz-answer2"></button>
+            <button class="quiz-option glow-button mb-2" id="quiz-answer3"></button>
+        </div>
+        
+        <p id="result" class="text-lg font-bold mt-4"></p>
+        <a href="gamen.html">
+            <button class="glow-button" onclick="endGame()">
+                <i class="fas fa-stop">
+                </i>
+                End Game
+               </button>
+            </a>
+    </div>
+    
+    <script>
+        const vocabulary = [
+            { tamil: "பக்கம்", english: "side" },
+            { tamil: "கடல்", english: "sea" },
+            { tamil: "மரம்", english: "tree" },
+            { tamil: "பறவை", english: "bird" },
+            { tamil: "புத்தகம்", english: "book" },
+            { tamil: "இலக்கியம்", english: "literature" },
+            { tamil: "அறிவு", english: "knowledge" },
+            { tamil: "சந்திரன்", english: "moon" },
+            { tamil: "சூரியன்", english: "sun" },
+            { tamil: "பூ", english: "flower" }
+        ];
+
+        let currentWordIndex = 0;
+        let currentQuizIndex = 0;
+        let score = 0;
+
+        const tamilWordElement = document.getElementById("tamil-word");
+        const answerButtons = document.querySelectorAll(".answer-btn");
+        const nextButton = document.getElementById("next-btn");
+        const resultElement = document.getElementById("result");
+
+        const tamilWordMatchingElement = document.getElementById("tamil-word-matching");
+        const matchButtons = document.querySelectorAll(".match-btn");
+
+        const quizQuestionElement = document.getElementById("quiz-question");
+        const quizAnswerButtons = document.querySelectorAll(".quiz-option");
+
+        function startFlashcardGame() {
+            const currentWord = vocabulary[currentWordIndex];
+            tamilWordElement.textContent = currentWord.tamil;
+
+            const answerOptions = [currentWord.english];
+            while (answerOptions.length < 3) {
+                const randomWord = vocabulary[Math.floor(Math.random() * vocabulary.length)];
+                if (!answerOptions.includes(randomWord.english)) {
+                    answerOptions.push(randomWord.english);
+                }
+            }
+
+            answerOptions.sort(() => Math.random() - 0.5);
+
+            answerButtons.forEach((button, index) => {
+                button.textContent = answerOptions[index];
+                button.onclick = () => checkAnswer(button.textContent);
+            });
+
+            nextButton.classList.add("hidden");
+        }
+
+        function checkAnswer(selectedAnswer) {
+            const correctAnswer = vocabulary[currentWordIndex].english;
+
+            if (selectedAnswer === correctAnswer) {
+                score++;
+                resultElement.textContent = `Correct! Current Score: ${score}`;
+            } else {
+                resultElement.textContent = `Wrong! Correct answer is: ${correctAnswer}`;
+            }
+
+            nextButton.classList.remove("hidden");
+        }
+
+        function showNextWord() {
+            currentWordIndex++;
+            if (currentWordIndex >= vocabulary.length) {
+                resultElement.textContent = `Game Over! Your final score is: ${score}`;
+                return;
+            }
+
+            resultElement.textContent = '';
+            startFlashcardGame();
+        }
+
+        function startMatchingGame() {
+            const currentWord = vocabulary[currentWordIndex];
+            tamilWordMatchingElement.textContent = currentWord.tamil;
+
+            const answerOptions = [currentWord.english];
+            while (answerOptions.length < 3) {
+                const randomWord = vocabulary[Math.floor(Math.random() * vocabulary.length)];
+                if (!answerOptions.includes(randomWord.english)) {
+                    answerOptions.push(randomWord.english);
+                }
+            }
+
+            answerOptions.sort(() => Math.random() - 0.5);
+
+            matchButtons.forEach((button, index) => {
+                button.textContent = answerOptions[index];
+                button.onclick = () => checkMatchingAnswer(button.textContent);
+            });
+
+            nextButton.classList.add("hidden");
+        }
+
+        function checkMatchingAnswer(selectedAnswer) {
+            const correctAnswer = vocabulary[currentWordIndex].english;
+
+            if (selectedAnswer === correctAnswer) {
+                score++;
+                resultElement.textContent = `Correct! Current Score: ${score}`;
+            } else {
+                resultElement.textContent = `Wrong! Correct answer is: ${correctAnswer}`;
+            }
+
+            nextButton.classList.remove("hidden");
+        }
+
+        function startQuiz() {
+            const currentQuiz = vocabulary[currentQuizIndex];
+            quizQuestionElement.textContent = `What is the English meaning of '${currentQuiz.tamil}'?`;
+
+            const answerOptions = [currentQuiz.english];
+            while (answerOptions.length < 3) {
+                const randomWord = vocabulary[Math.floor(Math.random() * vocabulary.length)];
+                if (!answerOptions.includes(randomWord.english)) {
+                    answerOptions.push(randomWord.english);
+                }
+            }
+
+            answerOptions.sort(() => Math.random() - 0.5);
+
+            quizAnswerButtons.forEach((button, index) => {
+                button.textContent = answerOptions[index];
+                button.onclick = () => checkQuizAnswer(button.textContent);
+            });
+        }
+
+        function checkQuizAnswer(selectedAnswer) {
+            const correctAnswer = vocabulary[currentQuizIndex].english;
+
+            if (selectedAnswer === correctAnswer) {
+                score++;
+                resultElement.textContent = `Correct! Current Score: ${score}`;
+            } else {
+                resultElement.textContent = `Wrong! Correct answer is: ${correctAnswer}`;
+            }
+
+            currentQuizIndex++;
+            if (currentQuizIndex >= vocabulary.length) {
+                resultElement.textContent = `Quiz Over! Your final score is: ${score}`;
+            } else {
+                startQuiz();
+            }
+        }
+
+        // Event listeners for the sections
+        nextButton.addEventListener("click", showNextWord);
+
+        // Start the flashcard game initially
+        startFlashcardGame();
+    </script>
+</body>
+</html>

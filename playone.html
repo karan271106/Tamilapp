@@ -1,0 +1,151 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamil Alphabet Game (Difficult Version)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <style>
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glow-button {
+            background: linear-gradient(45deg, #ff6ec4, #7873f5);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 10px rgba(255, 110, 196, 0.5), 0 0 20px rgba(120, 115, 245, 0.5);
+            transition: transform 0.2s;
+        }
+        .glow-button:hover {
+            transform: scale(1.05);
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="font-roboto bg-gray-900 text-white flex justify-center items-center h-screen">
+    <div class="game-container bg-white text-gray-900 rounded-lg p-8 shadow-lg w-80 text-center">
+        <h1 class="text-2xl font-bold mb-4">Tamil Alphabet Game (Difficult)</h1>
+        <div class="letter-container mb-4">
+            <h2 id="tamil-letter" class="text-5xl text-red-500"></h2>
+        </div>
+        <input type="text" id="user-input" class="w-full p-2 mb-4 rounded-lg border border-gray-300" placeholder="Enter the English letter">
+        <button id="submit-btn" class="glow-button w-full mb-4">Submit</button>
+        <p id="result" class="text-lg font-bold mb-4"></p>
+        <button id="next-btn" class="glow-button w-full hidden">Next Letter</button>
+        <div id="timer" class="timer text-lg mt-4">Time: <span id="time-left">10</span> seconds</div>
+        <a href="gamen.html">
+        <button class="glow-button" onclick="endGame()">
+            <i class="fas fa-stop">
+            </i>
+            End Game
+           </button>
+        </a>
+    </div>
+    <script>
+        const tamilLetters = [
+            { tamil: "அ", english: "a" },
+            { tamil: "ஆ", english: "aa" },
+            { tamil: "இ", english: "i" },
+            { tamil: "ஈ", english: "ii" },
+            { tamil: "உ", english: "u" },
+            { tamil: "ஊ", english: "uu" },
+            { tamil: "எ", english: "e" },
+            { tamil: "ஏ", english: "ee" },
+            { tamil: "ஒ", english: "o" },
+            { tamil: "ஓ", english: "oo" },
+            { tamil: "ஔ", english: "au" },
+            { tamil: "க", english: "ka" },
+            { tamil: "ங", english: "nga" },
+            { tamil: "ச", english: "cha" },
+            { tamil: "ஜ", english: "ja" },
+            { tamil: "த", english: "tha" },
+            { tamil: "ந", english: "na" },
+            { tamil: "ப", english: "pa" },
+            { tamil: "ம", english: "ma" },
+            { tamil: "ய", english: "ya" },
+            { tamil: "ர", english: "ra" },
+            { tamil: "ல", english: "la" },
+            { tamil: "ள", english: "lla" },
+            { tamil: "ற", english: "rra" },
+            { tamil: "ன", english: "na" },
+            { tamil: "ஶ", english: "sha" },
+            { tamil: "ஷ", english: "sha" },
+            { tamil: "ஸ", english: "sa" },
+            { tamil: "ஹ", english: "ha" },
+            { tamil: "க்ஷ", english: "ksha" },
+            { tamil: "ஶ்ரீ", english: "shri" }
+        ];
+
+        let currentLetterIndex = 0;
+        let timer;
+        let timeLeft = 10;
+
+        const tamilLetterElement = document.getElementById("tamil-letter");
+        const userInput = document.getElementById("user-input");
+        const submitButton = document.getElementById("submit-btn");
+        const resultElement = document.getElementById("result");
+        const nextButton = document.getElementById("next-btn");
+        const timeLeftElement = document.getElementById("time-left");
+
+        function startTimer() {
+            timer = setInterval(function() {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    timeLeftElement.textContent = timeLeft;
+                } else {
+                    clearInterval(timer);
+                    resultElement.textContent = `Time's up! The correct answer is: ${tamilLetters[currentLetterIndex].english}`;
+                    nextButton.classList.remove("hidden");
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timer);
+        }
+
+        function displayLetter() {
+            const currentLetter = tamilLetters[currentLetterIndex];
+            tamilLetterElement.textContent = currentLetter.tamil;
+            resultElement.textContent = '';
+            userInput.value = '';
+            timeLeft = 10;
+            timeLeftElement.textContent = timeLeft;
+            startTimer();
+        }
+
+        function checkAnswer() {
+            const currentLetter = tamilLetters[currentLetterIndex];
+            const userAnswer = userInput.value.trim().toLowerCase();
+            
+            stopTimer();
+
+            if (userAnswer === currentLetter.english) {
+                resultElement.textContent = "Correct! 🎉";
+                nextButton.classList.remove("hidden");
+            } else {
+                resultElement.textContent = `Wrong! The correct answer is: ${currentLetter.english}`;
+                nextButton.classList.add("hidden");
+            }
+        }
+
+        function nextLetter() {
+            currentLetterIndex = Math.floor(Math.random() * tamilLetters.length);
+            displayLetter();
+            nextButton.classList.add("hidden");
+        }
+
+        submitButton.addEventListener("click", checkAnswer);
+        nextButton.addEventListener("click", nextLetter);
+
+        // Initialize the game
+        displayLetter();
+    </script>
+</body>
+</html>

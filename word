@@ -1,0 +1,6 @@
+ <a href="gamen.html"><button class="glow-button" onclick="endGame()">
+      <i class="fas fa-stop">
+      </i>
+      End Game
+     </button>
+    </a>
